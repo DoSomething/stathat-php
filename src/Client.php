@@ -29,9 +29,12 @@ class Client {
      *
      * @param $stat_key     string - Private key identifying the stat
      * @param $count        int - Number you want to count
+     * @throws \Exception
      */
     public function count($stat_key, $count = 1)
     {
+        if(!isset($this->config['user_key'])) throw new \Exception('User key not set.');
+
         $this->client->post('c', ['body' => ['ukey' => $this->config['user_key'], 'key' => $stat_key, 'count' => $count]]);
     }
 
@@ -41,9 +44,12 @@ class Client {
      *
      * @param $stat_key     string - Private key identifying the stat
      * @param $value        int - Value you want to track
+     * @throws \Exception
      */
     public function value($stat_key, $value)
     {
+        if(!isset($this->config['user_key'])) throw new \Exception('User key not set.');
+
         $this->client->post('v', ['body' => ['ukey' => $this->config['user_key'], 'key' => $stat_key, 'value' => $value]]);
     }
 
@@ -53,9 +59,12 @@ class Client {
      *
      * @param $stat         string - Unique stat name
      * @param $count        int - Number you want to count
+     * @throws \Exception
      */
     public function ezCount($stat, $count = 1)
     {
+        if(!isset($this->config['user_key'])) throw new \Exception('EZ key not set.');
+
         $this->client->post('ez', ['body' => ['ezkey' => $this->config['ez_key'], 'stat' => $stat, 'count' => $count]]);
     }
 
@@ -65,9 +74,12 @@ class Client {
      *
      * @param $stat         string - Unique stat name
      * @param $value        int - Value you want to track
+     * @throws \Exception
      */
     public function ezValue($stat, $value)
     {
+        if(!isset($this->config['user_key'])) throw new \Exception('EZ key not set.');
+
         $this->client->post('ez', ['body' => ['ezkey' => $this->config['ez_key'], 'stat' => $stat, 'value' => $value]]);
     }
 
