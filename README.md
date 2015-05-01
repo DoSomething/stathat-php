@@ -1,49 +1,51 @@
 # StatHat [![Packagist](https://img.shields.io/packagist/v/DoSomething/stathat.svg)](https://packagist.org/packages/dosomething/stathat)
 This is a simple, modern API wrapper for [StatHat](https://www.stathat.com). It also includes
-optional support for usage as a Laravel 4/5 service provider and facade.
+optional support for usage as a service provider & facade in Laravel 4 or 5.
 
 ### Installation
 Install with Composer:
-```
+```json
 "require": {
-    "dosomething/stathat": "dev-master"
+    "dosomething/stathat": "~0.0.1"
 }
 ```
 
-And then, if using Laravel (not required), add the service provider to `config/app.php` (or
-`app/config/app.php` in Laravel 4) in the `providers` array.
-```
-  'DoSomething\StatHat\StatHatServiceProvider'
-```
-
-To use the `StatHat` facade, add it to the `aliases` array below:
-```
-  'StatHat' => 'DoSomething\StatHat\Facade'
-```
-
-Finally, add your keys to the `services.php` configuration array:
-```
-    'stathat' => [
-        'ez_key' => 'your_ez_key@example.com' // required for EZ API
-        'user_key' => '<Your_User_Key>' // required for Classic API
-    ],
-```
-
-
 ### Usage
-In vanilla PHP:
+In vanilla PHP, simply require the `Client` class and create a new instance with your credentials.
 ```php
   use DoSomething\StatHat\Client as StatHat;
   
   $stathat = new StatHat(['ez_key' => '...', 'user_key' => '...']);
   $stathat->ezCount('stat_name', 1);
-
 ```
 
-In Laravel:
+### Laravel Usage
+Laravel support is built-in. Simply add a service provider & facade alias to your `config/app.php`:
+
+```php
+  'providers' => [
+    // ...
+    'DoSomething\StatHat\StatHatServiceProvider'
+  ],
+  
+  'aliases' => [
+    // ...
+    'StatHat' => 'DoSomething\StatHat\Facade'
+  ]
+```
+
+Finally, add your keys to the `config/services.php` configuration array:
+
+```php
+  'stathat' => [
+    'ez_key' => 'your_ez_key@example.com' // required for EZ API
+    'user_key' => '<Your_User_Key>' // required for Classic API
+  ]
+```
+
+The `StatHat` facade will now be accessible from anywhere in your application:
 ```php
   StatHat::ezCount('stat_name', 1);
-
 ```
 
 ### License
