@@ -14,7 +14,7 @@ class StatHatServiceProvider extends ServiceProvider
   {
     $app = $this->app;
     $app['stathat'] = $app->share(function ($app) {
-      return new StatHat($app['config']->get('services.stathat'));
+      return new Client($app['config']->get('services.stathat'));
     });
   }
 

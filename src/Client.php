@@ -6,7 +6,7 @@ class Client {
 
   protected $client;
 
-  public function __construct($key = NULL)
+  public function __construct($config = [])
   {
     $this->client = new GuzzleClient([
       'base_url' => 'https://api.stathat.com/',
