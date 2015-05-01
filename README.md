@@ -1,4 +1,4 @@
-# StatHat
+# StatHat [![Packagist](https://img.shields.io/packagist/v/DoSomething/stathat.svg)](https://packagist.org/packages/dosomething/stathat)
 This is a simple, modern API wrapper for [StatHat](https://www.stathat.com). It also includes
 optional support for usage as a Laravel 4/5 service provider and facade.
 
