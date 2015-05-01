@@ -49,4 +49,4 @@ The `StatHat` facade will now be accessible from anywhere in your application:
 ```
 
 ### License
-&copy;2015 DoSomething.org. StatHat-PHP is free software, and may be redistributed under the terms specified in the [LICENSE](blob/dev/LICENSE.md) file.
+&copy;2015 DoSomething.org. StatHat-PHP is free software, and may be redistributed under the terms specified in the [LICENSE](https://github.com/DoSomething/stathat-php/blob/master/LICENSE) file.
