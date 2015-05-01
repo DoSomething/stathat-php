@@ -1,0 +1,9 @@
+vendor
+
+# OS X
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Composer
+composer.lock

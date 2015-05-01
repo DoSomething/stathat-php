@@ -1,0 +1,21 @@
+{
+  "name": "dosomething/stathat",
+  "description": "Simple API wrapper for StatHat.",
+  "require": {
+    "php": ">=5.4.0",
+    "guzzlehttp/guzzle": "~5.0",
+    "illuminate/support": "~4.0|~5.0"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "David Furnes",
+      "email": "dfurnes@dosomething.org"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "DoSomething\\StatHat\\": "src/"
+    }
+  }
+}
