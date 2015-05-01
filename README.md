@@ -25,7 +25,7 @@ Finally, add your keys to the `services.php` configuration array:
 ```
     'stathat' => [
         'ez_key' => 'your_ez_key@example.com' // required for EZ API
-        'user_key' => '<Your_User_Key' // required for Classic API
+        'user_key' => '<Your_User_Key>' // required for Classic API
     ],
 ```
 
