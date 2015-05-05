@@ -1,6 +1,7 @@
 <?php namespace DoSomething\StatHat;
 
 use GuzzleHttp\Client as GuzzleClient;
+use Exception;
 
 class Client {
 
@@ -15,9 +16,9 @@ class Client {
         $this->client = new GuzzleClient([
             'base_url' => 'https://api.stathat.com/',
             'defaults' => [
+                'future' => true,
                 'headers' => [
                     'Content-Type' => 'application/x-www-form-urlencoded',
-                    'Connection' => 'Close'
                 ]
             ],
         ]);
@@ -29,13 +30,14 @@ class Client {
      *
      * @param $stat_key     string - Private key identifying the stat
      * @param $count        int - Number you want to count
+     * @return \GuzzleHttp\Message\FutureResponse
      * @throws \Exception
      */
     public function count($stat_key, $count = 1)
     {
-        if(!isset($this->config['user_key'])) throw new \Exception('User key not set.');
+        if(!isset($this->config['user_key'])) throw new Exception('StatHat user key not set.');
 
-        $this->client->post('c', ['body' => ['ukey' => $this->config['user_key'], 'key' => $stat_key, 'count' => $count]]);
+        return $this->client->post('c', ['body' => ['ukey' => $this->config['user_key'], 'key' => $stat_key, 'count' => $count]]);
     }
 
     /**
@@ -44,13 +46,14 @@ class Client {
      *
      * @param $stat_key     string - Private key identifying the stat
      * @param $value        int - Value you want to track
+     * @return \GuzzleHttp\Message\FutureResponse
      * @throws \Exception
      */
     public function value($stat_key, $value)
     {
-        if(!isset($this->config['user_key'])) throw new \Exception('User key not set.');
+        if(!isset($this->config['user_key'])) throw new Exception('StatHat user key not set.');
 
-        $this->client->post('v', ['body' => ['ukey' => $this->config['user_key'], 'key' => $stat_key, 'value' => $value]]);
+        return $this->client->post('v', ['body' => ['ukey' => $this->config['user_key'], 'key' => $stat_key, 'value' => $value]]);
     }
 
     /**
@@ -59,13 +62,14 @@ class Client {
      *
      * @param $stat         string - Unique stat name
      * @param $count        int - Number you want to count
+     * @return \GuzzleHttp\Message\FutureResponse
      * @throws \Exception
      */
     public function ezCount($stat, $count = 1)
     {
-        if(!isset($this->config['user_key'])) throw new \Exception('EZ key not set.');
+        if(!isset($this->config['user_key'])) throw new Exception('StatHat EZ key not set.');
 
-        $this->client->post('ez', ['body' => ['ezkey' => $this->config['ez_key'], 'stat' => $stat, 'count' => $count]]);
+        return $this->client->post('ez', ['body' => ['ezkey' => $this->config['ez_key'], 'stat' => $stat, 'count' => $count]]);
     }
 
     /**
@@ -74,13 +78,14 @@ class Client {
      *
      * @param $stat         string - Unique stat name
      * @param $value        int - Value you want to track
+     * @return \GuzzleHttp\Message\FutureResponse
      * @throws \Exception
      */
     public function ezValue($stat, $value)
     {
-        if(!isset($this->config['user_key'])) throw new \Exception('EZ key not set.');
+        if(!isset($this->config['user_key'])) throw new Exception('StatHat EZ key not set.');
 
-        $this->client->post('ez', ['body' => ['ezkey' => $this->config['ez_key'], 'stat' => $stat, 'value' => $value]]);
+        return $this->client->post('ez', ['body' => ['ezkey' => $this->config['ez_key'], 'stat' => $stat, 'value' => $value]]);
     }
 
 }
