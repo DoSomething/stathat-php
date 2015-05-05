@@ -67,7 +67,7 @@ class Client {
      */
     public function ezCount($stat, $count = 1)
     {
-        if(!isset($this->config['user_key'])) throw new Exception('StatHat EZ key not set.');
+        if(!isset($this->config['ez_key'])) throw new Exception('StatHat EZ key not set.');
 
         return $this->client->post('ez', ['body' => ['ezkey' => $this->config['ez_key'], 'stat' => $stat, 'count' => $count]]);
     }
@@ -83,7 +83,7 @@ class Client {
      */
     public function ezValue($stat, $value)
     {
-        if(!isset($this->config['user_key'])) throw new Exception('StatHat EZ key not set.');
+        if(!isset($this->config['ez_key'])) throw new Exception('StatHat EZ key not set.');
 
         return $this->client->post('ez', ['body' => ['ezkey' => $this->config['ez_key'], 'stat' => $stat, 'value' => $value]]);
     }
