@@ -1,4 +1,4 @@
-# StatHat [![Packagist](https://img.shields.io/packagist/v/DoSomething/stathat.svg)](https://packagist.org/packages/dosomething/stathat)
+# StatHat [![Packagist](https://img.shields.io/packagist/v/dosomething/stathat.svg)](https://packagist.org/packages/dosomething/stathat)
 This is a simple, modern API wrapper for [StatHat](https://www.stathat.com). It also includes
 optional support for usage as a service provider & facade in Laravel 4 or 5.
 
@@ -6,7 +6,7 @@ optional support for usage as a service provider & facade in Laravel 4 or 5.
 Install with Composer:
 ```json
 "require": {
-    "dosomething/stathat": "~0.0.1"
+    "dosomething/stathat": "~1.0.0"
 }
 ```
 
