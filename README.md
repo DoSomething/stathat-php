@@ -16,9 +16,9 @@ In vanilla PHP, simply require the `Client` class and create a new instance with
   use DoSomething\StatHat\Client as StatHat;
   
   $stathat = new StatHat([
-    'enabled' => (getenv('APP_ENV') == 'production'),
     'ez_key' => '...',
-    'user_key' => '...'
+    'user_key' => '...',
+    'debug' => (getenv('APP_ENV') != 'production')
   ]);
   $stathat->ezCount('stat_name', 1);
 ```
