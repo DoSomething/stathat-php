@@ -36,7 +36,7 @@ class Client {
     public function count($stat_key, $count = 1)
     {
         if(!isset($this->config['user_key'])) throw new Exception('StatHat user key not set.');
-        if($this->config['enabled'] == FALSE) return;
+        if($this->config['debug']) return;
 
         return $this->client->post('c', ['body' => ['ukey' => $this->config['user_key'], 'key' => $stat_key, 'count' => $count]]);
     }
@@ -53,7 +53,7 @@ class Client {
     public function value($stat_key, $value)
     {
         if(!isset($this->config['user_key'])) throw new Exception('StatHat user key not set.');
-        if($this->config['enabled'] == FALSE) return;
+        if($this->config['debug']) return;
 
         return $this->client->post('v', ['body' => ['ukey' => $this->config['user_key'], 'key' => $stat_key, 'value' => $value]]);
     }
@@ -70,7 +70,7 @@ class Client {
     public function ezCount($stat, $count = 1)
     {
         if(!isset($this->config['ez_key'])) throw new Exception('StatHat EZ key not set.');
-        if($this->config['enabled'] == FALSE) return;
+        if($this->config['debug']) return;
 
         return $this->client->post('ez', ['body' => ['ezkey' => $this->config['ez_key'], 'stat' => $stat, 'count' => $count]]);
     }
@@ -87,7 +87,7 @@ class Client {
     public function ezValue($stat, $value)
     {
         if(!isset($this->config['ez_key'])) throw new Exception('StatHat EZ key not set.');
-        if($this->config['enabled'] == FALSE) return;
+        if($this->config['debug']) return;
 
         return $this->client->post('ez', ['body' => ['ezkey' => $this->config['ez_key'], 'stat' => $stat, 'value' => $value]]);
     }
