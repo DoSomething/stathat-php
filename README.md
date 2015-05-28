@@ -6,7 +6,7 @@ optional support for usage as a service provider & facade in Laravel 4 or 5.
 Install with Composer:
 ```json
 "require": {
-    "dosomething/stathat": "~1.0.0"
+    "dosomething/stathat": "^1.1.0"
 }
 ```
 
@@ -16,11 +16,17 @@ In vanilla PHP, simply require the `Client` class and create a new instance with
   use DoSomething\StatHat\Client as StatHat;
   
   $stathat = new StatHat([
-    'ez_key' => '...',
-    'user_key' => '...',
-    'debug' => (getenv('APP_ENV') != 'production')
+    'user_key' => '<your_user_key>',       // required for count() and value()
+    'ez_key' => 'your_ez_key@example.com', // required for ezCount() and ezValue()
+    'debug' => getenv('APP_DEBUG')         // optional!
   ]);
-  $stathat->ezCount('stat_name', 1);
+  
+  // And go!
+  $stathat->ezCount('<stat_name>', 1);
+  $stathat->ezValue('<stat_name>', 15);
+  
+  $stathat->count('<stat_key>', 1);
+  $stathat->value('<stat_key>', 9);
 ```
 
 ### Laravel Usage
@@ -42,14 +48,19 @@ Finally, add your keys to the `config/services.php` configuration array:
 
 ```php
   'stathat' => [
-    'ez_key' => 'your_ez_key@example.com' // required for EZ API
-    'user_key' => '<Your_User_Key>' // required for Classic API
+    'user_key' => '<your_user_key>'       // required for count() and value() 
+    'ez_key' => 'your_ez_key@example.com' // required for ezCount() and ezValue()
+    'debug' => env('APP_DEBUG')           // optional!
   ]
 ```
 
 The `StatHat` facade will now be accessible from anywhere in your application:
 ```php
-  StatHat::ezCount('stat_name', 1);
+  StatHat::ezCount('<stat_name>', 1);
+  StatHat::ezValue('<stat_name>', 15);
+  
+  StatHat::count('stat_key', 1);
+  StatHat::value('stat_key', 9);
 ```
 
 ### License
