@@ -4,18 +4,29 @@ use Illuminate\Support\ServiceProvider;
 
 class StatHatServiceProvider extends ServiceProvider
 {
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        // ...
+    }
 
     /**
-     * Register the service provider.
+     * Register any application services.
      *
      * @return void
      */
     public function register()
     {
-        $app = $this->app;
-        $app['stathat'] = $app->share(function ($app) {
-            return new Client($app['config']->get('services.stathat'));
+        $this->app->singleton(Client::class, function () {
+            return new Client(config('services.stathat'));
         });
+
+        // Set alias for facade / requesting from IoC container
+        $this->app->alias(Client::class, 'stathat');
     }
 
 }
