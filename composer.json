@@ -3,7 +3,6 @@
   "description": "Simple API wrapper for StatHat.",
   "require": {
     "php": ">=5.4.0",
-    "guzzlehttp/guzzle": "~5.0",
   },
   "license": "MIT",
   "authors": [
