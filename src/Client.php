@@ -5,10 +5,23 @@ use Exception;
 
 class Client {
 
+    /**
+     * Configuration passed to the client.
+     * @var array
+     */
     protected $config;
 
     protected $client;
+    /**
+     * The base StatHat API URL.
+     * @var string
+     */
+    protected $url = 'https://api.stathat.com';
 
+    /**
+     * Create a new StatHat client.
+     * @param array $config
+     */
     public function __construct($config = [])
     {
         $this->config = $config;
@@ -26,11 +39,10 @@ class Client {
 
     /**
      * Increment a counter using the classic API.
-     * @see https://www.stathat.com/manual/send#classic
      *
-     * @param $stat_key     string - Private key identifying the stat
-     * @param $count        int - Number you want to count
-     * @return \GuzzleHttp\Message\FutureResponse
+     * @see https://www.stathat.com/manual/send#classic
+     * @param string $stat_key - Private key identifying the stat
+     * @param int $count - Number you want to count
      * @throws \Exception
      */
     public function count($stat_key, $count = 1)
@@ -43,11 +55,10 @@ class Client {
 
     /**
      * Send a value using the classic API.
-     * @see https://www.stathat.com/manual/send#classic
      *
-     * @param $stat_key     string - Private key identifying the stat
-     * @param $value        int - Value you want to track
-     * @return \GuzzleHttp\Message\FutureResponse
+     * @see https://www.stathat.com/manual/send#classic
+     * @param string $stat_key - Private key identifying the stat
+     * @param int $value - Value you want to track
      * @throws \Exception
      */
     public function value($stat_key, $value)
@@ -60,11 +71,10 @@ class Client {
 
     /**
      * Increment a counter using the EZ API.
-     * @see https://www.stathat.com/manual/send#ez
      *
-     * @param $stat         string - Unique stat name
-     * @param $count        int - Number you want to count
-     * @return \GuzzleHttp\Message\FutureResponse
+     * @see https://www.stathat.com/manual/send#ez
+     * @param string $stat - Unique stat name
+     * @param int $count - Number you want to count
      * @throws \Exception
      */
     public function ezCount($stat, $count = 1)
@@ -77,11 +87,10 @@ class Client {
 
     /**
      * Send a value using the EZ API.
-     * @see https://www.stathat.com/manual/send#ez
      *
-     * @param $stat         string - Unique stat name
-     * @param $value        int - Value you want to track
-     * @return \GuzzleHttp\Message\FutureResponse
+     * @see https://www.stathat.com/manual/send#ez
+     * @param string $stat - Unique stat name
+     * @param int $value - Value you want to track
      * @throws \Exception
      */
     public function ezValue($stat, $value)
