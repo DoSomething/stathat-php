@@ -1,6 +1,6 @@
 # StatHat [![Packagist](https://img.shields.io/packagist/v/dosomething/stathat.svg)](https://packagist.org/packages/dosomething/stathat)
 This is a simple, modern API wrapper for [StatHat](https://www.stathat.com). It also includes
-optional support for usage as a service provider & facade in Laravel 4 or 5.
+optional support for usage as a service in Laravel 5.
 
 ### Installation
 Install with Composer:
@@ -11,14 +11,15 @@ Install with Composer:
 ```
 
 ### Usage
-In vanilla PHP, simply require the `Client` class and create a new instance with your credentials.
+In vanilla PHP, require the `Client` class and create a new instance with your credentials.
 ```php
   use DoSomething\StatHat\Client as StatHat;
   
   $stathat = new StatHat([
     'user_key' => '<your_user_key>',       // required for count() and value()
     'ez_key' => 'your_ez_key@example.com', // required for ezCount() and ezValue()
-    'debug' => getenv('APP_DEBUG')         // optional!
+    'prefix' => 'appname - ',              // optional! will be prepended to EZ stat names
+    'debug' => false,                      // optional! will prevent sending stats if true.
   ]);
   
   // And go!
@@ -35,23 +36,24 @@ Laravel support is built-in. Simply add a service provider & facade alias to you
 ```php
   'providers' => [
     // ...
-    'DoSomething\StatHat\StatHatServiceProvider'
+    DoSomething\StatHat\StatHatServiceProvider::class,
   ],
   
   'aliases' => [
     // ...
-    'StatHat' => 'DoSomething\StatHat\Facade'
-  ]
+    'StatHat' => DoSomething\StatHat\Facades\StatHat::class
+  ],
 ```
 
 Finally, add your keys to the `config/services.php` configuration array:
 
 ```php
   'stathat' => [
-    'user_key' => '<your_user_key>'       // required for count() and value() 
-    'ez_key' => 'your_ez_key@example.com' // required for ezCount() and ezValue()
-    'debug' => env('APP_DEBUG')           // optional!
-  ]
+    'user_key' => '<your_user_key>',       // required for count() and value()
+    'ez_key' => 'your_ez_key@example.com', // required for ezCount() and ezValue()
+    'prefix' => 'appname - ',              // optional! will be prepended to EZ stat names
+    'debug' => env('APP_DEBUG'),           // optional! will prevent sending stats in debug mode.
+  ],
 ```
 
 The `StatHat` facade will now be accessible from anywhere in your application:
@@ -64,4 +66,4 @@ The `StatHat` facade will now be accessible from anywhere in your application:
 ```
 
 ### License
-&copy;2015 DoSomething.org. StatHat-PHP is free software, and may be redistributed under the terms specified in the [LICENSE](https://github.com/DoSomething/stathat-php/blob/master/LICENSE) file.
+&copy;2016 DoSomething.org. StatHat-PHP is free software, and may be redistributed under the terms specified in the [LICENSE](https://github.com/DoSomething/stathat-php/blob/master/LICENSE) file.  The name and logo for DoSomething.org are trademarks of Do Something, Inc and may not be used without permission.
