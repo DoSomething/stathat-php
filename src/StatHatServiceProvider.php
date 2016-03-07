@@ -1,4 +1,6 @@
-<?php namespace DoSomething\StatHat;
+<?php
+
+namespace DoSomething\StatHat;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -28,5 +30,4 @@ class StatHatServiceProvider extends ServiceProvider
         // Set alias for facade / requesting from IoC container
         $this->app->alias(Client::class, 'stathat');
     }
-
 }

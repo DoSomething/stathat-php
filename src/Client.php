@@ -1,10 +1,11 @@
-<?php namespace DoSomething\StatHat;
+<?php
 
-use GuzzleHttp\Client as GuzzleClient;
+namespace DoSomething\StatHat;
+
 use Exception;
 
-class Client {
-
+class Client
+{
     /**
      * Configuration passed to the client.
      * @var array
@@ -36,7 +37,10 @@ class Client {
      */
     public function count($stat_key, $count = 1)
     {
-        if(!isset($this->config['user_key'])) throw new Exception('StatHat user key not set.');
+        if (! isset($this->config['user_key'])) {
+            throw new Exception('StatHat user key not set.');
+        }
+
         $this->post('c', ['ukey' => $this->config['user_key'], 'key' => $stat_key, 'count' => $count]);
     }
 
@@ -50,7 +54,10 @@ class Client {
      */
     public function value($stat_key, $value)
     {
-        if(!isset($this->config['user_key'])) throw new Exception('StatHat user key not set.');
+        if (! isset($this->config['user_key'])) {
+            throw new Exception('StatHat user key not set.');
+        }
+
         $this->post('v', ['ukey' => $this->config['user_key'], 'key' => $stat_key, 'value' => $value]);
     }
 
@@ -64,10 +71,12 @@ class Client {
      */
     public function ezCount($stat, $count = 1)
     {
-        if(!isset($this->config['ez_key'])) throw new Exception('StatHat EZ key not set.');
+        if (! isset($this->config['ez_key'])) {
+            throw new Exception('StatHat EZ key not set.');
+        }
 
         // If a prefix is set, prepend it to the stat name.
-        if(! empty($this->config['prefix'])) {
+        if (! empty($this->config['prefix'])) {
             $stat = $this->config['prefix'].$stat;
         }
 
@@ -84,10 +93,12 @@ class Client {
      */
     public function ezValue($stat, $value)
     {
-        if(!isset($this->config['ez_key'])) throw new Exception('StatHat EZ key not set.');
+        if (! isset($this->config['ez_key'])) {
+            throw new Exception('StatHat EZ key not set.');
+        }
 
         // If a prefix is set, prepend it to the stat name.
-        if(! empty($this->config['prefix'])) {
+        if (! empty($this->config['prefix'])) {
             $stat = $this->config['prefix'].$stat;
         }
 
@@ -103,7 +114,9 @@ class Client {
     private function post($route = '', array $body = [])
     {
         // Don't send requests in debug mode.
-        if($this->config['debug']) return;
+        if ($this->config['debug']) {
+            return;
+        }
 
         $contents = http_build_query($body);
         $parts = parse_url($this->url.'/'.$route);
@@ -114,12 +127,14 @@ class Client {
 
         // Y'know back in my day we had to write our HTTP requests by
         // hand, and uphill both ways. Now these kids with their Guzzles...
-        $out = "POST ".$parts['path']." HTTP/1.1\r\n";
-        $out.= "Host: ".$parts['host']."\r\n";
-        $out.= "Content-Type: application/x-www-form-urlencoded\r\n";
-        $out.= "Content-Length: ".strlen($contents)."\r\n";
-        $out.= "Connection: Close\r\n\r\n";
-        if (isset($contents)) $out.= $contents;
+        $out = 'POST '.$parts['path'].' HTTP/1.1\r\n';
+        $out .= 'Host: '.$parts['host'].'\r\n';
+        $out .= 'Content-Type: application/x-www-form-urlencoded\r\n';
+        $out .= 'Content-Length: '.strlen($contents).'\r\n';
+        $out .= 'Connection: Close\r\n\r\n';
+        if (isset($contents)) {
+            $out .= $contents;
+        }
 
         // Fly away, little packet!
         fwrite($fp, $out);

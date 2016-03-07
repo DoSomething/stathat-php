@@ -1,4 +1,6 @@
-<?php namespace DoSomething\StatHat;
+<?php
+
+namespace DoSomething\StatHat;
 
 use Illuminate\Support\Facades\Facade;
 
