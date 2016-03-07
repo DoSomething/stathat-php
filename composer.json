@@ -2,7 +2,7 @@
   "name": "dosomething/stathat",
   "description": "Simple API wrapper for StatHat.",
   "require": {
-    "php": ">=5.4.0",
+    "php": ">=5.4.0"
   },
   "suggest": {
     "laravel/laravel": "Allows shared configuration through the Laravel 5 service container."
