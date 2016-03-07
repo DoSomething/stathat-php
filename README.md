@@ -6,7 +6,7 @@ optional support for usage as a service in Laravel 5.
 Install with Composer:
 ```json
 "require": {
-    "dosomething/stathat": "^1.1.0"
+    "dosomething/stathat": "^2.0.0"
 }
 ```
 
