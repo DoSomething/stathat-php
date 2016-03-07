@@ -18,6 +18,7 @@ In vanilla PHP, require the `Client` class and create a new instance with your c
   $stathat = new StatHat([
     'user_key' => '<your_user_key>',       // required for count() and value()
     'ez_key' => 'your_ez_key@example.com', // required for ezCount() and ezValue()
+    'prefix' => 'appname - ',              // optional! will be prepended to EZ stat names
     'debug' => false,                      // optional! will prevent sending stats if true.
   ]);
   
@@ -50,7 +51,8 @@ Finally, add your keys to the `config/services.php` configuration array:
   'stathat' => [
     'user_key' => '<your_user_key>',       // required for count() and value()
     'ez_key' => 'your_ez_key@example.com', // required for ezCount() and ezValue()
-    'debug' => env('APP_DEBUG'),        // optional! will prevent sending stats in debug mode.
+    'prefix' => 'appname - ',              // optional! will be prepended to EZ stat names
+    'debug' => env('APP_DEBUG'),           // optional! will prevent sending stats in debug mode.
   ],
 ```
 

@@ -65,6 +65,12 @@ class Client {
     public function ezCount($stat, $count = 1)
     {
         if(!isset($this->config['ez_key'])) throw new Exception('StatHat EZ key not set.');
+
+        // If a prefix is set, prepend it to the stat name.
+        if(! empty($this->config['prefix'])) {
+            $stat = $this->config['prefix'].$stat;
+        }
+
         $this->post('ez', ['ezkey' => $this->config['ez_key'], 'stat' => $stat, 'count' => $count]);
     }
 
@@ -79,6 +85,12 @@ class Client {
     public function ezValue($stat, $value)
     {
         if(!isset($this->config['ez_key'])) throw new Exception('StatHat EZ key not set.');
+
+        // If a prefix is set, prepend it to the stat name.
+        if(! empty($this->config['prefix'])) {
+            $stat = $this->config['prefix'].$stat;
+        }
+
         $this->post('ez', ['ezkey' => $this->config['ez_key'], 'stat' => $stat, 'value' => $value]);
     }
 
@@ -113,5 +125,4 @@ class Client {
         fwrite($fp, $out);
         fclose($fp);
     }
-
 }
