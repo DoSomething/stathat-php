@@ -127,11 +127,11 @@ class Client
 
         // Y'know back in my day we had to write our HTTP requests by
         // hand, and uphill both ways. Now these kids with their Guzzles...
-        $out = 'POST '.$parts['path'].' HTTP/1.1\r\n';
-        $out .= 'Host: '.$parts['host'].'\r\n';
-        $out .= 'Content-Type: application/x-www-form-urlencoded\r\n';
-        $out .= 'Content-Length: '.strlen($contents).'\r\n';
-        $out .= 'Connection: Close\r\n\r\n';
+        $out = 'POST '.$parts['path'].' HTTP/1.1'."\r\n";
+        $out .= 'Host: '.$parts['host']."\r\n";
+        $out .= 'Content-Type: application/x-www-form-urlencoded'."\r\n";
+        $out .= 'Content-Length: '.strlen($contents)."\r\n";
+        $out .= 'Connection: Close'."\r\n\r\n";
         if (isset($contents)) {
             $out .= $contents;
         }
