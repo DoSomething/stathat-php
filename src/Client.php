@@ -106,6 +106,22 @@ class Client
     }
 
     /**
+     * Delete a stat alert using the Alerts API.
+     *
+     * @see https://www.stathat.com/manual/alerts_api
+     * @param string $alert_id - Unique id of alert to be deleted
+     * @throws \Exception
+     */
+    public function deleteAlert($alert_id)
+    {
+        if (! isset($this->config['access_token'])) {
+            throw new Exception('StatHat Alerts API Access Token not set.');
+        }
+
+        $this->delete('x/' . $this->config['access_token'] . '/alerts/' . $alert_id);
+    }
+
+    /**
      * Perform an asynchronous POST request to the given route.
      *
      * @param string $route
@@ -135,6 +151,35 @@ class Client
         if (isset($contents)) {
             $out .= $contents;
         }
+
+        // Fly away, little packet!
+        fwrite($fp, $out);
+        fclose($fp);
+    }
+
+    /**
+     * Perform an asynchronous DELETE request to the given route.
+     *
+     * @param string $route
+     */
+    private function delete($route = '')
+    {
+        // Don't send requests in debug mode.
+        if ($this->config['debug']) {
+            return;
+        }
+
+        $parts = parse_url($this->url.'/'.$route);
+
+        $err_num = null;
+        $err_str = null;
+        $fp = ph($parts['host'], isset($parts['port']) ? $parts['port'] : 80, $err_num, $err_str, 30);
+
+        // Y'know back in my day we had to write our HTTP requests by
+        // hand, and uphill both ways. Now these kids with their Guzzles...
+        $out = 'DELETE '.$parts['path'].' HTTP/1.1'."\r\n";
+        $out .= 'Host: '.$parts['host']."\r\n";
+        $out .= 'Connection: Close'."\r\n\r\n";
 
         // Fly away, little packet!
         fwrite($fp, $out);
