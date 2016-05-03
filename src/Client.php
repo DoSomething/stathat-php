@@ -118,7 +118,7 @@ class Client
             throw new Exception('StatHat Alerts API Access Token not set.');
         }
 
-        $this->delete('x/' . $this->config['access_token'] . '/alerts/' . $alert_id);
+        $this->delete('x/'.$this->config['access_token'].'/alerts/'.$alert_id);
     }
 
     /**
