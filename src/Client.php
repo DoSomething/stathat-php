@@ -173,7 +173,7 @@ class Client
 
         $err_num = null;
         $err_str = null;
-        $fp = ph($parts['host'], isset($parts['port']) ? $parts['port'] : 80, $err_num, $err_str, 30);
+        $fp = fsockopen($parts['host'], isset($parts['port']) ? $parts['port'] : 80, $err_num, $err_str, 30);
 
         // Y'know back in my day we had to write our HTTP requests by
         // hand, and uphill both ways. Now these kids with their Guzzles...
