@@ -204,7 +204,6 @@ class Client
      */
     private function curlGet($curl_url)
     {
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $curl_url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -234,7 +233,6 @@ class Client
      */
     private function curlDelete($curl_url)
     {
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $curl_url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
