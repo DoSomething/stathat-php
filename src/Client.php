@@ -134,7 +134,7 @@ class Client
         if (! isset($this->config['access_token'])) {
             throw new Exception('StatHat Alerts API Access Token not set.');
         }
-        $result = $this->curlGet($this->alerts_url.'x/'.$this->config['access_token'].'/alerts');
+        $result = $this->curlGet($this->alerts_url.'/x/'.$this->config['access_token'].'/alerts');
 
         return $result;
     }
@@ -151,7 +151,7 @@ class Client
         if (! isset($this->config['access_token'])) {
             throw new Exception('StatHat Alerts API Access Token not set.');
         }
-        $result = $this->curlDelete($this->alerts_url.'x/'.$this->config['access_token'].'/alerts/'.$alert_id);
+        $result = $this->curlDelete($this->alerts_url.'/x/'.$this->config['access_token'].'/alerts/'.$alert_id);
         
         return $result;
     }
@@ -226,26 +226,28 @@ class Client
      * Perform cURL DELETE request to route. For example used by
      * Alerts API requests: https://www.stathat.com/manual/alerts_api
      *
-     * @param string $curlURL
+     * @param string $curl_url
      *   Ex: /x/ACCESSTOKEN/alerts/ALERTID
      * @return string $result
      *   Response code.
      */
-    private function curlDelete($curlURL)
+    private function curlDelete($curl_url)
     {
-        
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $curlUrl);
+        curl_setopt($ch, CURLOPT_URL, $curl_url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-        curl_setopt($ch, CURLOPT_HEADER, TRUE);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-          'Accept: application/json',
-          'Content-Type: application/json',
-        ));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_exec($ch);
-        $result = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+
+        if ($http_code == 404) {
+          $result = $http_code;
+        }
+        else {
+          $json_result = json_decode($result);
+          $result = $http_code . ': ' . $json_result->msg;
+        }
 
         return $result;
     }
