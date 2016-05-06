@@ -120,6 +120,7 @@ class Client
         }
 
         $result = $this->deleteAlertCurl('x/'.$this->config['access_token'].'/alerts/'.$alert_id);
+
         return $result;
     }
 
