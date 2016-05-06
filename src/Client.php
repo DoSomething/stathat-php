@@ -17,6 +17,7 @@ class Client
      * @var string
      */
     protected $url = 'https://api.stathat.com';
+    protected $alerts_url = 'https://www.stathat.com';
 
     /**
      * Create a new StatHat client.
@@ -106,6 +107,24 @@ class Client
     }
 
     /**
+     * Delete a stat alert using the Alerts API.
+     *
+     * @see https://www.stathat.com/manual/alerts_api
+     * @param string $alert_id - Unique id of alert to be deleted
+     * @throws \Exception
+     */
+    public function deleteAlert($alert_id)
+    {
+        if (! isset($this->config['access_token'])) {
+            throw new Exception('StatHat Alerts API Access Token not set.');
+        }
+
+        $result = $this->deleteAlertCurl('x/'.$this->config['access_token'].'/alerts/'.$alert_id);
+
+        return $result;
+    }
+
+    /**
      * Perform an asynchronous POST request to the given route.
      *
      * @param string $route
@@ -139,5 +158,32 @@ class Client
         // Fly away, little packet!
         fwrite($fp, $out);
         fclose($fp);
+    }
+
+    /**
+     * Perform cURL DELETE request to route. Used by
+     * Alerts API requests: https://www.stathat.com/manual/alerts_api
+     *
+     * @param string $route
+     * Ex: /x/ACCESSTOKEN/alerts/ALERTID
+     */
+    private function deleteAlertCurl($route = '')
+    {
+        $curlUrl = $this->alerts_url.'/'.$route;
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $curlUrl);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+          'Accept: application/json',
+          'Content-Type: application/json',
+        ]);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_exec($ch);
+        $result = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        return $result;
     }
 }
