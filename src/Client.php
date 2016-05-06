@@ -196,16 +196,16 @@ class Client
      * Perform cURL GET request to route. For example used by
      * Alerts API requests: https://www.stathat.com/manual/alerts_api
      *
-     * @param string $curlURL
+     * @param string $curl_url
      *   Ex: https://www.stathat.com/x/ACCESSTOKEN/alerts
      * @return array or string $result
      *   An array of alert details or the response code string in the case of a non 200 response.
      */
-    private function curlGet($curlURL)
+    private function curlGet($curl_url)
     {
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $curlUrl);
+        curl_setopt($ch, CURLOPT_URL, $curl_url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
           'Accept: application/json',
           'Content-Type: application/json',
