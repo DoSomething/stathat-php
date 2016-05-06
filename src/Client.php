@@ -120,6 +120,7 @@ class Client
         }
 
         $result = $this->deleteAlertCurl('x/'.$this->config['access_token'].'/alerts/'.$alert_id);
+
         return $result;
     }
     
@@ -152,7 +153,7 @@ class Client
             throw new Exception('StatHat Alerts API Access Token not set.');
         }
         $result = $this->curlDelete($this->alerts_url.'/x/'.$this->config['access_token'].'/alerts/'.$alert_id);
-        
+
         return $result;
     }
 
@@ -206,16 +207,16 @@ class Client
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $curl_url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
           'Accept: application/json',
           'Content-Type: application/json',
-        ));
+        ]);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $jsonResult = curl_exec($ch);
         $result = json_decode($jsonResult);
         $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if ($responseCode != 200) {
-          $result = $responseCode;
+            $result = $responseCode;
         }
         curl_close($ch);
 
@@ -242,11 +243,11 @@ class Client
         curl_close($ch);
 
         if ($http_code == 404) {
-          $result = $http_code;
+            $result = $http_code;
         }
         else {
-          $json_result = json_decode($result);
-          $result = $http_code . ': ' . $json_result->msg;
+            $json_result = json_decode($result);
+            $result = $http_code . ': ' . $json_result->msg;
         }
 
         return $result;
