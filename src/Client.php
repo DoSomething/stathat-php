@@ -17,6 +17,7 @@ class Client
      * @var string
      */
     protected $url = 'https://api.stathat.com';
+    protected $alerts_url = 'https://www.stathat.com';
 
     /**
      * Create a new StatHat client.
@@ -118,7 +119,8 @@ class Client
             throw new Exception('StatHat Alerts API Access Token not set.');
         }
 
-        $this->delete('x/'.$this->config['access_token'].'/alerts/'.$alert_id);
+        $result = $this->deleteAlertCurl('x/'.$this->config['access_token'].'/alerts/'.$alert_id);
+        return $result;
     }
 
     /**
@@ -158,31 +160,29 @@ class Client
     }
 
     /**
-     * Perform an asynchronous DELETE request to the given route.
+     * Perform cURL DELETE request to route. Used by
+     * Alerts API requests: https://www.stathat.com/manual/alerts_api
      *
      * @param string $route
+     * Ex: /x/ACCESSTOKEN/alerts/ALERTID
      */
-    private function delete($route = '')
+    private function deleteAlertCurl($route = '')
     {
-        // Don't send requests in debug mode.
-        if ($this->config['debug']) {
-            return;
-        }
+        $curlUrl = $this->alerts_url.'/'.$route;
 
-        $parts = parse_url($this->url.'/'.$route);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $curlUrl);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        curl_setopt($ch, CURLOPT_HEADER, TRUE);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+          'Accept: application/json',
+          'Content-Type: application/json',
+        ));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_exec($ch);
+        $result = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
 
-        $err_num = null;
-        $err_str = null;
-        $fp = fsockopen($parts['host'], isset($parts['port']) ? $parts['port'] : 80, $err_num, $err_str, 30);
-
-        // Y'know back in my day we had to write our HTTP requests by
-        // hand, and uphill both ways. Now these kids with their Guzzles...
-        $out = 'DELETE '.$parts['path'].' HTTP/1.1'."\r\n";
-        $out .= 'Host: '.$parts['host']."\r\n";
-        $out .= 'Connection: Close'."\r\n\r\n";
-
-        // Fly away, little packet!
-        fwrite($fp, $out);
-        fclose($fp);
+        return $result;
     }
 }
