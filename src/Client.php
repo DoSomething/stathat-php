@@ -123,7 +123,7 @@ class Client
 
         return $result;
     }
-    
+
     /**
      * Get listing of all stat alerts using the Alerts API.
      *
@@ -234,9 +234,10 @@ class Client
      */
     private function curlDelete($curl_url)
     {
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $curl_url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch);
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -244,10 +245,9 @@ class Client
 
         if ($http_code == 404) {
             $result = $http_code;
-        }
-        else {
+        } else {
             $json_result = json_decode($result);
-            $result = $http_code . ': ' . $json_result->msg;
+            $result = $http_code.': '.$json_result->msg;
         }
 
         return $result;
