@@ -107,6 +107,41 @@ class Client
     }
 
     /**
+     * List stat alerts using the Alerts API. Used to look up alert IDs of alerts assigned
+     * to certain stats.
+     *
+     * @see https://www.stathat.com/manual/alerts_api
+     * @throws \Exception
+     */
+    public function listAlerts()
+    {
+        if (! isset($this->config['access_token'])) {
+            throw new Exception('StatHat Alerts API Access Token not set.');
+        }
+
+        $result = $this->deleteAlertCurl('x/'.$this->config['access_token'].'/alerts/'.$alert_id);
+
+        return $result;
+    }
+
+    /**
+     * Get listing of all stat alerts using the Alerts API.
+     *
+     * @see https://www.stathat.com/manual/alerts_api
+     * @throws \Exception
+     */
+    public function getAlerts()
+    {
+        if (! isset($this->config['access_token'])) {
+            throw new Exception('StatHat Alerts API Access Token not set.');
+        }
+
+        $result = $this->curlGet($this->alerts_url.'/x/'.$this->config['access_token'].'/alerts');
+
+        return $result;
+    }
+
+    /**
      * Delete a stat alert using the Alerts API.
      *
      * @see https://www.stathat.com/manual/alerts_api
@@ -119,7 +154,7 @@ class Client
             throw new Exception('StatHat Alerts API Access Token not set.');
         }
 
-        $result = $this->deleteAlertCurl('x/'.$this->config['access_token'].'/alerts/'.$alert_id);
+        $result = $this->curlDelete($this->alerts_url.'/x/'.$this->config['access_token'].'/alerts/'.$alert_id);
 
         return $result;
     }
@@ -161,29 +196,58 @@ class Client
     }
 
     /**
-     * Perform cURL DELETE request to route. Used by
+     * Perform cURL GET request to route. For example used by
      * Alerts API requests: https://www.stathat.com/manual/alerts_api
      *
-     * @param string $route
-     * Ex: /x/ACCESSTOKEN/alerts/ALERTID
+     * @param string $curl_url
+     *   Ex: https://www.stathat.com/x/ACCESSTOKEN/alerts
+     * @return array $result
+     *   Alert details.
      */
-    private function deleteAlertCurl($route = '')
+    private function curlGet($curl_url)
     {
-        $curlUrl = $this->alerts_url.'/'.$route;
-
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $curlUrl);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
-        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_URL, $curl_url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
           'Accept: application/json',
           'Content-Type: application/json',
         ]);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_exec($ch);
-        $result = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $json_result = curl_exec($ch);
+        $result = json_decode($json_result);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
+        if ($http_code != 200) {
+            throw new Exception('curlGet responded with '.$http_code);
+        }
+
         return $result;
+    }
+
+    /**
+     * Perform cURL DELETE request to route. For example used by
+     * Alerts API requests: https://www.stathat.com/manual/alerts_api
+     *
+     * @param string $curl_url
+     *   Ex: /x/ACCESSTOKEN/alerts/ALERTID
+     * @return bool
+     *   Response code.
+     */
+    private function curlDelete($curl_url)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $curl_url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($http_code != 200) {
+            throw new Exception('curlDelete responded with '.$http_code.': '.$json_result->msg);
+        }
+
+        return true;
     }
 }
