@@ -135,6 +135,7 @@ class Client
         if (! isset($this->config['access_token'])) {
             throw new Exception('StatHat Alerts API Access Token not set.');
         }
+
         $result = $this->curlGet($this->alerts_url.'/x/'.$this->config['access_token'].'/alerts');
 
         return $result;
@@ -152,6 +153,7 @@ class Client
         if (! isset($this->config['access_token'])) {
             throw new Exception('StatHat Alerts API Access Token not set.');
         }
+
         $result = $this->curlDelete($this->alerts_url.'/x/'.$this->config['access_token'].'/alerts/'.$alert_id);
 
         return $result;
@@ -199,8 +201,8 @@ class Client
      *
      * @param string $curl_url
      *   Ex: https://www.stathat.com/x/ACCESSTOKEN/alerts
-     * @return array or string $result
-     *   An array of alert details or the response code string in the case of a non 200 response.
+     * @return array $result
+     *   Alert details.
      */
     private function curlGet($curl_url)
     {
@@ -211,13 +213,14 @@ class Client
           'Content-Type: application/json',
         ]);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $jsonResult = curl_exec($ch);
-        $result = json_decode($jsonResult);
-        $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        if ($responseCode != 200) {
-            $result = $responseCode;
-        }
+        $json_result = curl_exec($ch);
+        $result = json_decode($json_result);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+
+        if ($http_code != 200) {
+            throw new Exception('curlGet responded with '.$http_code);
+        }
 
         return $result;
     }
@@ -228,7 +231,7 @@ class Client
      *
      * @param string $curl_url
      *   Ex: /x/ACCESSTOKEN/alerts/ALERTID
-     * @return string $result
+     * @return boolean
      *   Response code.
      */
     private function curlDelete($curl_url)
@@ -237,17 +240,14 @@ class Client
         curl_setopt($ch, CURLOPT_URL, $curl_url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $result = curl_exec($ch);
+        curl_exec($ch);
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        if ($http_code == 404) {
-            $result = $http_code;
-        } else {
-            $json_result = json_decode($result);
-            $result = $http_code.': '.$json_result->msg;
+        if ($http_code != 200) {
+            throw new Exception('curlDelete responded with '.$http_code.': '.$json_result->msg);
         }
 
-        return $result;
+        return true;
     }
 }
