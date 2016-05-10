@@ -231,7 +231,7 @@ class Client
      *
      * @param string $curl_url
      *   Ex: /x/ACCESSTOKEN/alerts/ALERTID
-     * @return boolean
+     * @return bool
      *   Response code.
      */
     private function curlDelete($curl_url)
